@@ -1,0 +1,47 @@
+print unknown
+
+stconst_i a 40
+print a
+stconst_i b 2
+print b
+stconst_i c -10
+print c
+
+stadd aplusb a b
+print aplusb
+stcat acatb a b
+print acatb
+stmul acatbmulb acatb b
+print acatbmulb
+
+stconst_s s1 Hello_World!
+print s1
+stconst_s s2 ByeWorld
+print s2
+
+stcat s1cats2 s1 s2
+stcat acats2 a s2
+stcat s1catb s1 b
+print s1cats2
+print acats2
+print s1catb
+
+stadd s1pluss2 s1 s2
+stadd apluss2 a s2
+stadd s1plusa s1 a
+stadd bplusacats2 b acats2
+print s1pluss2
+print apluss2
+print s1plusa
+print bplusacats2
+
+goto 43
+stconst_s wrong Wrong!
+print wrong
+goto 49
+
+stlt cond a b
+brt 39 cond
+
+stgt cond a b
+brf 39 cond

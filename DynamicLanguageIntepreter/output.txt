@@ -1,0 +1,16 @@
+""
+40
+2
+-10
+42
+"402"
+804
+"Hello_World!"
+"ByeWorld"
+"Hello_World!ByeWorld"
+"40ByeWorld"
+"Hello_World!2"
+0
+40
+40
+42

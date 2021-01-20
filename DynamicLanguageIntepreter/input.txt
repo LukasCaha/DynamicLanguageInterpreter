@@ -1,0 +1,10 @@
+stconst_i i 0
+stconst_i increment 1
+stconst_i maximum 10
+
+stlt break i maximum
+brf 11 break
+stadd i i increment
+print i
+stlt break i maximum
+goto 5
