@@ -30,6 +30,7 @@
 `label:`  jump instructions can reference to label name instead of line number
 
 `longConcat 4 delimiter result string1 string2 string3 string4`  concatenate more than 2 variables, first parameter determines amount, delimiter will be put between all strings
+
 `minus output number1 number2` create integer _output_ with value _(number1-number2)_
 
 
