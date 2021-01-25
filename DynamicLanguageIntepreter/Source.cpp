@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iterator>
 #include <algorithm>
+#include "Source.h"
 
 using namespace std;
 
@@ -50,13 +51,15 @@ struct Variable {
 		}
 	}
 
-	void Print() {
+	string Print() {
+		stringstream output;
 		if (isInt) {
-			cout << intValue << endl;
+			output << intValue << endl;
 		}
 		else {
-			cout << "\"" << stringValue << "\"" << endl;
+			output << "\"" << stringValue << "\"" << endl;
 		}
+		return output.str();
 	}
 };
 
@@ -81,11 +84,11 @@ Variable GetVariable(const string &name, map<string, Variable>& variables) {
 	}
 }
 
-void InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, Variable>& variables, int& pointer)
+string InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, Variable>& variables, int& pointer)
 {
 	if (tokens.size() <= 0) {
 		//empty line
-		return;
+		return "";
 	}
 	string instruction = tokens[0];
 	//INT A = 5
@@ -143,7 +146,7 @@ void InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, V
 	//PRINT A
 	if (instruction == "print") {
 		Variable var = GetVariable(tokens[1], variables);
-		var.Print();
+		return var.Print();
 	}
 	//GOTO A
 	if (instruction == "goto") {
@@ -163,16 +166,35 @@ void InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, V
 			pointer = stoi(tokens[1]) - 1;
 		}
 	}
+	return "";
 }
 
-void ProcessLine(string line, int& pointer, map<string, Variable>& variables) {
+string ProcessLine(string line, int& pointer, map<string, Variable>& variables) {
 	//split line into tokens
 	stringstream ss(line);
 	vector<string> tokens;
 	copy(istream_iterator<string>(ss), istream_iterator<string>(), back_inserter(tokens));
 
 	//all instructions
-	InstructionSwitch(tokens, variables, pointer);
+	return InstructionSwitch(tokens, variables, pointer);
+}
+
+string GetProgramOutput(std::vector<std::string>& lines)
+{
+	stringstream output;
+
+	//CREATE PROGRAM MEMORY
+	map<string, Variable> variables = {};
+
+	//RUN PROGRAM
+	int pointer = 1;
+	int lineCount = lines.size();
+	while (pointer < lineCount) {
+		output << ProcessLine(lines[pointer], pointer, variables);
+		pointer++;
+	}
+
+	return output.str();
 }
 
 int main(int argc, char* argv[]) {
@@ -186,16 +208,7 @@ int main(int argc, char* argv[]) {
 	{
 		lines.push_back(temp);
 	}
-	int lineCount = lines.size();
 
-	//CREATE PROGRAM MEMORY
-	map<string, Variable> variables = {};
-
-	//RUN PROGRAM
-	int pointer = 1;
-	while (pointer < lineCount) {
-		ProcessLine(lines[pointer], pointer, variables);
-		pointer++;
-	}
+	cout << GetProgramOutput(lines);
 }
 
