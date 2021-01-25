@@ -108,6 +108,58 @@ namespace UnitTests
 			Assert::AreEqual(expected, actual);
 		}
 
+		TEST_METHOD(Minus1)
+		{
+			std::string expected = "-5\n";
+			vector<string> lines;
+			lines.push_back("");		//line 0
+			lines.push_back("number a 0");
+			lines.push_back("number b 5");
+			lines.push_back("minus c a b");
+			lines.push_back("print c");
+			std::string actual = GetProgramOutput(lines);
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(Minus2)
+		{
+			std::string expected = "-10\n";
+			vector<string> lines;
+			lines.push_back("");		//line 0
+			lines.push_back("number a -5");
+			lines.push_back("number b 5");
+			lines.push_back("minus c a b");
+			lines.push_back("print c");
+			std::string actual = GetProgramOutput(lines);
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(Minus3)
+		{
+			std::string expected = "10\n";
+			vector<string> lines;
+			lines.push_back("");		//line 0
+			lines.push_back("number a -5");
+			lines.push_back("number b 5");
+			lines.push_back("minus c b a");
+			lines.push_back("print c");
+			std::string actual = GetProgramOutput(lines);
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(Minus4)
+		{
+			std::string expected = "105\n";
+			vector<string> lines;
+			lines.push_back("");		//line 0
+			lines.push_back("number a 0");
+			lines.push_back("number b -105");
+			lines.push_back("minus c a b");
+			lines.push_back("print c");
+			std::string actual = GetProgramOutput(lines);
+			Assert::AreEqual(expected, actual);
+		}
+
 		TEST_METHOD(Product1)
 		{
 			std::string expected = "63\n";
@@ -168,7 +220,7 @@ namespace UnitTests
 		}
 		TEST_METHOD(LongConcatNew)
 		{
-			std::string expected = "\"-5_+_17_=_12\"";
+			std::string expected = "\"-5_+_17_=_12\"\n";
 			vector<string> lines;
 			lines.push_back("");		//line 0
 			lines.push_back("number a -5");

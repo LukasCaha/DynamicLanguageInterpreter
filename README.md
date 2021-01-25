@@ -7,9 +7,13 @@
 
 `sum output number1 number2` create integer _output_ with value _(number1+number2)_
 
+`minus output number1 number2` create integer _output_ with value _(number1-number2)_
+
 `product output number1 number2` create integer _output_ with value _(number1*number2)_
 
 `concat result string1 string2` create string _result_ whose value is concatenation of _string1_ and _string2_
+
+`longConcat 4 delimiter result string1 string2 string3 string4`  concatenate more than 2 variables, first parameter determines amount, delimiter will be put between all strings
 
 `greaterThen outcome num1 num2` create integer _outcome_, if _num1_ > _num2_ set _outcome_ to 1, else set it to 0
 
@@ -28,12 +32,6 @@
 ### Planned
 
 `label:`  jump instructions can reference to label name instead of line number
-
-`longConcat 4 delimiter result string1 string2 string3 string4`  concatenate more than 2 variables, first parameter determines amount, delimiter will be put between all strings
-
-`minus output number1 number2` create integer _output_ with value _(number1-number2)_
-
-
 
 ## Examples
 ### Hello World!

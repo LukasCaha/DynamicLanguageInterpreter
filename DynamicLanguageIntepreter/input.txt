@@ -14,6 +14,7 @@ number b 17
 number c 100
 text plus +
 text equals =
+text delimiter _
 
 sum sum a b
 concat aplus a plus
@@ -21,6 +22,9 @@ concat aplusb aplus b
 concat aplusbequals aplusb equals
 concat aplusbequalssum aplusbequals sum
 print aplusbequalssum
+
+longConcat 5 delimiter result a plus b equals sum
+print result
 
 product product b c
 print product

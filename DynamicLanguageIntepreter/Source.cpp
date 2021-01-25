@@ -106,6 +106,13 @@ string InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string,
 		int sum = a + b;
 		SetVariable(tokens[1], Variable(sum), variables);
 	}
+	//minus result a b
+	if (instruction == "minus") {
+		int a = GetVariable(tokens[2], variables).GetInt();
+		int b = GetVariable(tokens[3], variables).GetInt();
+		int sum = a - b;
+		SetVariable(tokens[1], Variable(sum), variables);
+	}
 	//INT TRG = A * B
 	if (instruction == "product") {
 		/*int a = stoi(GetVariable(tokens[2], variables).GetString());
@@ -118,12 +125,24 @@ string InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string,
 		int product = a * b;
 		SetVariable(tokens[1], Variable(product), variables);
 	}
-	//INT TRG = A.tostring + B.tostring
+	//TEXT TRG = A.tostring + B.tostring
 	if (instruction == "concat") {
 		string a = GetVariable(tokens[2], variables).GetString();
 		string b = GetVariable(tokens[3], variables).GetString();
 		string concat = a + b;
 		SetVariable(tokens[1], Variable(concat), variables);
+	}
+	//longConcat 4 delimiter result string1 string2 string3 string4
+	//0			 1 2		 3		4 - n
+	if (instruction == "longConcat") {
+		stringstream output;
+		string delimiter = GetVariable(tokens[2], variables).GetString();
+		for (int i = 0; i < std::stoi(tokens[1]); i++) {
+			if(i > 0)
+				output << delimiter;
+			output << GetVariable(tokens[4 + i], variables).GetString();
+		}
+		SetVariable(tokens[3], Variable(output.str()), variables);
 	}
 	//BOOL TRG = A > B
 	if (instruction == "greaterThen") {
