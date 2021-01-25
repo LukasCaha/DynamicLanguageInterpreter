@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iterator>
 #include <algorithm>
+#include "Source.h"
 
 using namespace std;
 
@@ -50,13 +51,15 @@ struct Variable {
 		}
 	}
 
-	void Print() {
+	string Print() {
+		stringstream output;
 		if (isInt) {
-			cout << intValue << endl;
+			output << intValue << endl;
 		}
 		else {
-			cout << "\"" << stringValue << "\"" << endl;
+			output << "\"" << stringValue << "\"" << endl;
 		}
+		return output.str();
 	}
 };
 
@@ -81,30 +84,30 @@ Variable GetVariable(const string &name, map<string, Variable>& variables) {
 	}
 }
 
-void InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, Variable>& variables, int& pointer)
+string InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, Variable>& variables, int& pointer)
 {
 	if (tokens.size() <= 0) {
 		//empty line
-		return;
+		return "";
 	}
 	string instruction = tokens[0];
 	//INT A = 5
-	if (instruction == "stconst_i") {
+	if (instruction == "number") {
 		SetVariable(tokens[1], Variable(stoi(tokens[2])), variables);
 	}
 	//STRING B = "C"
-	if (instruction == "stconst_s") {
+	if (instruction == "text") {
 		SetVariable(tokens[1], Variable(tokens[2]), variables);
 	}
 	//INT TRG = A + B
-	if (instruction == "stadd") {
+	if (instruction == "sum") {
 		int a = GetVariable(tokens[2], variables).GetInt();
 		int b = GetVariable(tokens[3], variables).GetInt();
 		int sum = a + b;
 		SetVariable(tokens[1], Variable(sum), variables);
 	}
 	//INT TRG = A * B
-	if (instruction == "stmul") {
+	if (instruction == "product") {
 		/*int a = stoi(GetVariable(tokens[2], variables).GetString());
 		int b = stoi(GetVariable(tokens[3], variables).GetString());*/
 		int a = GetVariable(tokens[2], variables).GetInt();
@@ -116,14 +119,14 @@ void InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, V
 		SetVariable(tokens[1], Variable(product), variables);
 	}
 	//INT TRG = A.tostring + B.tostring
-	if (instruction == "stcat") {
+	if (instruction == "concat") {
 		string a = GetVariable(tokens[2], variables).GetString();
 		string b = GetVariable(tokens[3], variables).GetString();
 		string concat = a + b;
 		SetVariable(tokens[1], Variable(concat), variables);
 	}
 	//BOOL TRG = A > B
-	if (instruction == "stgt") {
+	if (instruction == "greaterThen") {
 		int a = GetVariable(tokens[2], variables).GetInt();
 		int b = GetVariable(tokens[3], variables).GetInt();
 		bool expression = a > b;
@@ -132,7 +135,7 @@ void InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, V
 		SetVariable(tokens[1], Variable(outcome), variables);
 	}
 	//BOOL TRG = A < B
-	if (instruction == "stlt") {
+	if (instruction == "lessThen") {
 		int a = GetVariable(tokens[2], variables).GetInt();
 		int b = GetVariable(tokens[3], variables).GetInt();
 		bool expression = a < b;
@@ -143,36 +146,55 @@ void InstructionSwitch(std::vector<std::string>& tokens, std::map<std::string, V
 	//PRINT A
 	if (instruction == "print") {
 		Variable var = GetVariable(tokens[1], variables);
-		var.Print();
+		return var.Print();
 	}
 	//GOTO A
 	if (instruction == "goto") {
 		pointer = stoi(tokens[1]) - 1;
 	}
 	//BRT LINE COND
-	if (instruction == "brt") {
+	if (instruction == "jumpIfTrue") {
 		int cond = GetVariable(tokens[2], variables).GetInt();
 		if (cond != 0) {
 			pointer = stoi(tokens[1]) - 1;
 		}
 	}
 	//BRF LINE COND
-	if (instruction == "brf") {
+	if (instruction == "jumpIfFalse") {
 		int cond = GetVariable(tokens[2], variables).GetInt();
 		if (cond == 0) {
 			pointer = stoi(tokens[1]) - 1;
 		}
 	}
+	return "";
 }
 
-void ProcessLine(string line, int& pointer, map<string, Variable>& variables) {
+string ProcessLine(string line, int& pointer, map<string, Variable>& variables) {
 	//split line into tokens
 	stringstream ss(line);
 	vector<string> tokens;
 	copy(istream_iterator<string>(ss), istream_iterator<string>(), back_inserter(tokens));
 
 	//all instructions
-	InstructionSwitch(tokens, variables, pointer);
+	return InstructionSwitch(tokens, variables, pointer);
+}
+
+string GetProgramOutput(std::vector<std::string>& lines)
+{
+	stringstream output;
+
+	//CREATE PROGRAM MEMORY
+	map<string, Variable> variables = {};
+
+	//RUN PROGRAM
+	int pointer = 1;
+	int lineCount = lines.size();
+	while (pointer < lineCount) {
+		output << ProcessLine(lines[pointer], pointer, variables);
+		pointer++;
+	}
+
+	return output.str();
 }
 
 int main(int argc, char* argv[]) {
@@ -186,16 +208,7 @@ int main(int argc, char* argv[]) {
 	{
 		lines.push_back(temp);
 	}
-	int lineCount = lines.size();
 
-	//CREATE PROGRAM MEMORY
-	map<string, Variable> variables = {};
-
-	//RUN PROGRAM
-	int pointer = 1;
-	while (pointer < lineCount) {
-		ProcessLine(lines[pointer], pointer, variables);
-		pointer++;
-	}
+	cout << GetProgramOutput(lines);
 }
 

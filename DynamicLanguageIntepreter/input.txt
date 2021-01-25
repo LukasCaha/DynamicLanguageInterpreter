@@ -1,10 +1,26 @@
-stconst_i i 0
-stconst_i increment 1
-stconst_i maximum 10
+number i 0
+number increment 1
+number maximum 10
 
-stlt break i maximum
-brf 11 break
-stadd i i increment
+lessThen break i maximum
+jumpIfFalse 11 break
+sum i i increment
 print i
-stlt break i maximum
+lessThen break i maximum
 goto 5
+
+number a -5
+number b 17
+number c 100
+text plus +
+text equals =
+
+sum sum a b
+concat aplus a plus
+concat aplusb aplus b
+concat aplusbequals aplusb equals
+concat aplusbequalssum aplusbequals sum
+print aplusbequalssum
+
+product product b c
+print product

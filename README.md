@@ -1,19 +1,19 @@
 # Dynamic Language Interpreter
 
 ## Instructions
-`stconst_i variableName 5` create integer _variableName_ with value _5_
+`number variableName 5` create integer _variableName_ with value _5_
 
-`stconst_s stringVariable HelloWorld!` create string _stringVariable_ with value _HelloWorld!_
+`text stringVariable HelloWorld!` create string _stringVariable_ with value _HelloWorld!_
 
-`stadd sum number1 number2` create integer _sum_ with value _(number1+number2)_
+`sum output number1 number2` create integer _output_ with value _(number1+number2)_
 
-`stmul product number1 number2` create integer _product_ with value _(number1*number2)_
+`product output number1 number2` create integer _output_ with value _(number1*number2)_
 
-`stcat result string1 string2` create string _result_ whose value is concatenation of _string1_ and _string2_
+`concat result string1 string2` create string _result_ whose value is concatenation of _string1_ and _string2_
 
-`stgt outcome num1 num2` create integer _outcome_, if _num1_ > _num2_ set _outcome_ to 1, else set it to 0
+`greaterThen outcome num1 num2` create integer _outcome_, if _num1_ > _num2_ set _outcome_ to 1, else set it to 0
 
-`stlt outcome num1 num2` create integer _outcome_, if _num1_ < _num2_ set _outcome_ to 1, else set it to 0
+`lessThen outcome num1 num2` create integer _outcome_, if _num1_ < _num2_ set _outcome_ to 1, else set it to 0
 
 `print integer` print value in variable _integer_ to console
 
@@ -21,15 +21,25 @@
 
 `goto 15` jump to line _15_
 
-`brt 15 cond` jump to line _15_ if variable _cond_ is not 0 or empty string
+`jumpIfTrue 15 cond` jump to line _15_ if variable _cond_ is not 0 or empty string
 
-`brf 15` jump to line _15_ if variable _cond_ is 0 or empty string
+`jumpIfFalse 15` jump to line _15_ if variable _cond_ is 0 or empty string
+
+### Planned
+
+`label:`  jump instructions can reference to label name instead of line number
+
+`longConcat 4 delimiter result string1 string2 string3 string4`  concatenate more than 2 variables, first parameter determines amount, delimiter will be put between all strings
+
+`minus output number1 number2` create integer _output_ with value _(number1-number2)_
+
+
 
 ## Examples
 ### Hello World!
 Program:
 ```
-stconst_s hello HelloWorld!
+text hello HelloWorld!
 print hello
 ```
 Output:
@@ -40,20 +50,20 @@ HelloWorld!
 ### Simple arithmetics
 Program:
 ```
-stconst_i a -5
-stconst_i b 17
-stconst_i c 100
-stconst_s plus +
-stconst_s equals =
+number a -5
+number b 17
+number c 100
+text plus +
+text equals =
 
-stadd sum a b
-stcat aplus a plus
-stcat aplusb aplus b
-stcat aplusbequals aplusb equals
-stcat aplusbequalssum aplusbequals sum
+sum sum a b
+concat aplus a plus
+concat aplusb aplus b
+concat aplusbequals aplusb equals
+concat aplusbequalssum aplusbequals sum
 print aplusbequalssum
 
-stmul product b c
+product product b c
 print product
 ```
 Output:
@@ -65,15 +75,15 @@ Output:
 ### Loop
 Program:
 ```
-stconst_i i 0
-stconst_i increment 1
-stconst_i maximum 10
+number i 0
+number increment 1
+number maximum 10
 
-stlt break i maximum
-brf 11 break
-stadd i i increment
+lessThen break i maximum
+jumpIfFalse 11 break
+sum i i increment
 print i
-stlt break i maximum
+lessThen break i maximum
 goto 5
 ```
 Output:
